@@ -52,7 +52,6 @@ class User
     public function resetPassword($id,$date)
     {
 
-
         // Generazione della password randomica
         $password = bin2hex(openssl_random_pseudo_bytes(4));
 
