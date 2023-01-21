@@ -49,12 +49,22 @@ class User
         return $stmt->execute();
     }
 
-    public function resetPassword($id)
+    public function resetPassword($id,$date)
     {
         $date = date("Y-m-d h:m:s");
 
         // Generazione della password randomica
         $password = bin2hex(openssl_random_pseudo_bytes(4));
+
+        $sql = "UPDATE user
+        SET password = :password
+        WHERE id = :id AND active = 1";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+
+    $stmt->execute();
 
         // Aggiunta alla tabella reset l'utente
         $sql = "INSERT INTO reset
